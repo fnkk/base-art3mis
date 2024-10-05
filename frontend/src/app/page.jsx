@@ -7,6 +7,9 @@ import React, { useEffect, useState } from 'react';
 import { useAccount, useContract, useProvider, useSigner } from 'wagmi';
 import { useReadContract, useWriteContract } from 'wagmi'
 import { ethers } from 'ethers';
+import CatImg from "../../public/new/cat.png"
+import ChatBox from "../../public/new/chat-box.png"
+import ButtonImg from "../../public/new/button-star.png"
 
 export default function Home() {
   const [drawnCard, setDrawnCard] = useState(null);
@@ -550,7 +553,7 @@ export default function Home() {
       "type": "function"
     }
   ];
-  const CONTRACT_ADDRESS = '0x6d9055be44BbF7DBFb14272A582A34Af7Bb9F295'
+  const CONTRACT_ADDRESS = '0xa89b1064E1a04a9A8666c16Cabf10dFe6f89065b'
   const { data: result, error: errorName, isPending: isPendingName, refetch } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: contractABI,
@@ -558,8 +561,11 @@ export default function Home() {
     enabled: false, // 禁用自动读取
   })
   const getDrawCardAndFetchReading = async () => {
+    console.log('--==99900')
     setLoading(true);
     await refetch(); // 重新读取合约数据
+    console.log('--==99900========',result)
+
     setContractResult(result); // 设置结果
   };
   const { data: tokenId, refetch: refetchToken } = useReadContract({
@@ -580,7 +586,8 @@ export default function Home() {
       getDrawCardAndFetchReading()
       console.log("abi result", result);
 
-      const output = result.split('; ');
+      // const output = result.split('; ');
+      const output = ['3223','4234','2434'];
 
       const card = output[0];
       const position = output[1];
@@ -702,8 +709,8 @@ export default function Home() {
         backgroundImage: (lyrics && ques)
           ? "url(/profilebg.png)"
           : (address)
-            ? "url(/afterlogin.png)"
-            : "url(/beforelogin.png)",
+            ? "url(/web_bg.png)"
+            : "url(/afterlogin.png)",
         backgroundPosition: "center",
         backgroundSize: "cover",
         position: "relative",
@@ -732,14 +739,21 @@ export default function Home() {
       <div className="lg:flex md:flex gap-10">
         <div>
           {!connected && (
-            <button
-              onClick={() => {
-                setques(true);
-              }}
-              className={`rounded-full py-2 ml-3 uppercase`} style={{ fontFamily: 'fantasy', color: '#BBBB9B', marginTop: '300px' }}
-            >
-              Start Now
-            </button>
+            <div className="flex items-center mt-72 relative">
+
+              <div className="flex items-center">
+                <Image src={CatImg} alt="Cat" className="w-[240px]" />
+                <Image src={ChatBox} alt="Cat" className="w-[828px]" />
+              </div>
+              <button
+                className="absolute bottom-4 left-1/2"
+                onClick={() => {
+                  setques(true);
+                }}
+              >
+                <Image src={ButtonImg} alt="Cat" className="w-[240px]" />
+              </button>
+            </div>
           )}
 
           {!lyrics && connected && (
